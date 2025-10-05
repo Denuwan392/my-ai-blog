@@ -37,6 +37,18 @@
                 radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 20%),
                 radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 20%);
         }
+
+        .article-card-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .article-card-link:hover .article-card {
+            cursor: pointer;
+            /* Optional: add visual hover effect */
+            /* e.g., background-color: #f9f9f9; */
+        }
         
         .container {
             width: 100%;
@@ -431,6 +443,7 @@
             }
         }
         
+        
         @media (max-width: 480px) {
             .hero h1 {
                 font-size: 2.2rem;
@@ -500,21 +513,23 @@
                 </div>
                 
                 <!-- Article 2 -->
-                <div class="article-card">
-                    <div class="article-image">
-                        <i class="fas fa-microchip"></i>
-                    </div>
-                    <div class="article-content">
-                        <span class="article-tag">WHAT IS LLM?</span>
-                        <h3 class="article-title">මහා පරිමාණ භාෂා ආකෘතියක් (LLM) යනු කුමක්ද?</h3>
-                        <p class="article-excerpt">පාඨයන් තේරුම් ගැනීමට සහ මිනිස් භාෂාවට සමාන ප්‍රතිචාර ජනනය කිරීමට පුහුණු කර ඇති අතිශය සංකීර්ණ කෘත්‍රිම බුද්ධි (AI) පද්ධතියකි</p>
-                        <div class="article-meta">
-                            <span>June 8, 2024</span>
-                            <span>12 min read</span>
+                <a href="articles/what_is_llm.html" class="article-card-link">
+                    <div class="article-card">
+                        <div class="article-image">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                        <div class="article-content">
+                            <span class="article-tag">WHAT IS LLM?</span>
+                            <h3 class="article-title">මහා පරිමාණ භාෂා ආකෘතියක් (LLM) යනු කුමක්ද?</h3>
+                            <p class="article-excerpt">පාඨයන් තේරුම් ගැනීමට සහ මිනිස් භාෂාවට සමාන ප්‍රතිචාර ජනනය කිරීමට පුහුණු කර ඇති අතිශය සංකීර්ණ කෘත්‍රිම බුද්ධි (AI) පද්ධතියකි</p>
+                            <div class="article-meta">
+                                <span>June 8, 2024</span>
+                                <span>12 min read</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                
+                </a>
+                                
                 <!-- Article 3 -->
                 <div class="article-card">
                     <div class="article-image">
