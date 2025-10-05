@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>මහා පරිමාණ භාෂා ආකෘතියක් (LLM) | Neural Insights</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Sinhalan:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --dark: #0f172a;
+            --darker: #0b1120;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+            --gradient-dark: linear-gradient(135deg, var(--primary-dark), var(--accent));
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            line-height: 1.8;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 20%);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            padding: 24px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: rgba(11, 17, 32, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 24px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .logo i {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 28px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+        }
+        
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        
+        nav a:hover {
+            color: var(--primary);
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        .cta-button {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(99, 102, 241, 0.5);
+        }
+        
+        /* Article Styles */
+        .article-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 40px;
+            background: var(--card-bg);
+            border-radius: 24px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .article-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .article-tag {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--primary);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        .article-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            background: linear-gradient(to right, #e2e8f0, #cbd5e1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .article-meta {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            color: var(--gray);
+            font-size: 1rem;
+        }
+        
+        .article-content {
+            font-family: 'Noto Sans Sinhalan', sans-serif;
+            font-size: 1.2rem;
+            color: #e2e8f0;
+        }
+        
+        .article-content p {
+            margin-bottom: 24px;
+        }
+        
+        .article-content h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            margin: 40px 0 24px;
+            color: var(--light);
+            position: relative;
+            padding-bottom: 12px;
+        }
+        
+        .article-content h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--gradient);
+            border-radius: 3px;
+        }
+        
+        .article-content h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.4rem;
+            margin: 32px 0 16px;
+            color: var(--light);
+        }
+        
+        .article-content ul {
+            padding-left: 30px;
+            margin: 20px 0 24px;
+        }
+        
+        .article-content li {
+            margin-bottom: 12px;
+            position: relative;
+        }
+        
+        .article-content li::before {
+            content: '•';
+            color: var(--primary);
+            font-weight: bold;
+            position: absolute;
+            left: -20px;
+            font-size: 1.4rem;
+        }
+        
+        .highlight {
+            background: rgba(139, 92, 246, 0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        .quote {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid var(--primary);
+            padding: 24px;
+            margin: 32px 0;
+            font-style: italic;
+            border-radius: 0 12px 12px 0;
+        }
+        
+        .quote p {
+            margin-bottom: 0;
+            font-size: 1.3rem;
+            line-height: 1.6;
+        }
+        
+        /* Newsletter */
+        .newsletter {
+            padding: 60px 0;
+            background: rgba(11, 17, 32, 0.6);
+            border-radius: 30px;
+            margin: 60px auto;
+            max-width: 800px;
+        }
+        
+        .newsletter-container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .newsletter h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+        
+        .newsletter p {
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .newsletter-form input {
+            flex: 1;
+            padding: 14px 20px;
+            border-radius: 30px;
+            border: none;
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            font-size: 16px;
+        }
+        
+        .newsletter-form input::placeholder {
+            color: var(--gray);
+        }
+        
+        /* Footer */
+        footer {
+            padding: 60px 0 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h4 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--gradient);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-column ul li a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-column ul li a:hover {
+            color: var(--primary);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 16px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--light);
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            color: var(--gray);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .article-container {
+                padding: 24px;
+                margin: 20px auto;
+            }
+            
+            .article-title {
+                font-size: 2.2rem;
+            }
+            
+            .article-content {
+                font-size: 1.1rem;
+            }
+            
+            nav ul {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+                background: none;
+                border: none;
+                color: white;
+                font-size: 24px;
+                cursor: pointer;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .article-title {
+                font-size: 1.8rem;
+            }
+            
+            .article-content h2 {
+                font-size: 1.5rem;
+            }
+            
+            .article-content h3 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <span>Neural Insights</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#">Articles</a></li>
+                    <li><a href="#">Topics</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="cta-button">Subscribe</button>
+        </div>
+    </header>
+
+    <!-- Article Content -->
+    <div class="container">
+        <div class="article-container">
+            <div class="article-header">
+                <span class="article-tag">AI EXPLAINED</span>
+                <h1 class="article-title">මහා පරිමාණ භාෂා ආකෘතියක් (LLM) යනු කුමක්ද?</h1>
+                <div class="article-meta">
+                    <span><i class="far fa-calendar"></i> ජූනි 15, 2024</span>
+                    <span><i class="far fa-clock"></i> 12 මිනිත්තු කියවීම</span>
+                </div>
+            </div>
+            
+            <div class="article-content">
+                <p>මහා පරිමාණ භාෂා ආකෘතියක් (LLM) යනු <span class="highlight">පාඨයන් තේරුම් ගැනීමට සහ මිනිස් භාෂාවට සමාන ප්‍රතිචාර ජනනය කිරීමට පුහුණු කර ඇති අතිශය සංකීර්ණ කෘත්‍රිම බුද්ධි (AI) පද්ධතියකි</span>.</p>
+                
+                <p>සෑම කෙනෙකුටම වැදගත් වන පරිදි LLM පිළිබඳ මූලික අංග පහත දැක්වේ:</p>
+                
+                <h2>1. මූලික නිර්වචනය සහ ක්‍රියාකාරීත්වය</h2>
+                
+                <ul>
+                    <li>LLM යනු පරිගණක විද්‍යාවේදී <span class="highlight">ට්‍රාන්ස්ෆෝමර් (Transformer)</span> නම් ගෘහ නිර්මාණ ශිල්පය භාවිතයෙන් ගොඩනගා ඇති ආකෘතියකි.</li>
+                    <li>මෙම ආකෘති <span class="highlight">GPT-4, PaLM, සහ BERT-large</span> වැනි විශාල දත්ත කට්ටල මත පුහුණු කර ඇති අතර, මේවාට විවෘත වෙබ් අන්තර්ගතයන්, පොත්පත් සහ අනෙකුත් නිදහස් දත්ත ඇතුළත් වේ.</li>
+                    <li>LLM වල මූලික කාර්යය වන්නේ <span class="highlight">සංඛ්‍යාන රටා</span> මත පදනම්ව ඊළඟට පැමිණිය හැකි වඩාත් සුදුසු වචනය (හෝ <span class="highlight">ටෝකනය</span>) පුරෝකථනය කිරීමයි. මෙම යාන්ත්‍රණය නිසා ප්‍රතිචාර "මිනිස් ස්වභාවයට" සමීප වේ.</li>
+                    <li>LLM හි ක්‍රියාකාරීත්වය රඳා පවතින්නේ එයට එකවර සැකසිය හැකි <span class="highlight">සන්දර්භ කවුළුවේ (Context Window)</span> උපරිම ටෝකන සංඛ්‍යාව මතය.</li>
+                </ul>
+                
+                <div class="quote">
+                    <p>"LLM යනු භාෂාවේ රටා සහ සම්බන්ධතා ඉගෙන ගන්නා බලවත් යන්ත්‍ර ඉගෙනුම් ආකෘතියකි. එය මිනිස් මනසක් නොව, භාෂාවේ සංඛ්‍යාත්මක රටා මත පදනම් වූ පුරෝකථන යන්ත්‍රයකි."</p>
+                </div>
+                
+                <h2>2. ප්‍රධාන හැකියාවන් (Generative AI)</h2>
+                
+                <p>LLM යනු <span class="highlight">නිර්මාණාත්මක AI (Generative AI)</span> හි පදනම වන අතර, එයට පාඨ පමණක් නොව වෙනත් මාදිලියේ අන්තර්ගතයන් ද නිර්මාණය කළ හැකිය.</p>
+                
+                <ul>
+                    <li><span class="highlight">පාඨ ජනනය:</span> ප්‍රශ්නවලට පිළිතුරු සැපයීම, සාරාංශ කිරීම, භාෂා පරිවර්තනය සහ නිර්මාණාත්මක ලිවීම (කථා, කවි) වැනි කාර්යයන් එයට ඉටු කළ හැකිය.</li>
+                    <li><span class="highlight">කේත ජනනය:</span> LLM මඟින් කේත කැබලි (code snippets) ජනනය කිරීම, කේත නිවැරදි කිරීම සහ මෘදුකාංග සංවර්ධන කටයුතු සඳහා සහාය වීම සිදු කරයි.</li>
+                    <li><span class="highlight">බහුමාදිලි (Multimodal) හැකියාව:</span> වඩාත් දියුණු LLM (උදා: GPT-4o, Gemini) මඟින් පාඨවලට අමතරව <span class="highlight">රූප, ශ්‍රව්‍ය සහ වීඩියෝ</span> වැනි විවිධ දත්ත වර්ග තේරුම් ගැනීමට සහ ජනනය කිරීමට හැකියාව ඇත.</li>
+                    <li><span class="highlight">නියෝජිතයෙකු ලෙස ක්‍රියා කිරීම:</span> LLM වලට හුදෙක් පාඨ ජනනය කිරීමට අමතරව, <span class="highlight">API ඇමතීමෙන්, කේත ජනනය කිරීමෙන් සහ බාහිර වෙබ් සේවාවන් සමඟ අන්තර් ක්‍රියා කිරීමෙන්</span> සංකීර්ණ කාර්යයන් ඉටු කිරීමට ද හැකියාව ඇත.</li>
+                </ul>
+                
+                <h2>3. LLM වර්ග</h2>
+                
+                <p>LLM ප්‍රධාන වශයෙන් කාර්යයන් අනුව වර්ගීකරණය වේ:</p>
+                
+                <ul>
+                    <li><span class="highlight">ස්වයංක්‍රීයව අනුක්‍රමිකව පාඨ ජනනය කරන ආකෘති (Autoregressive LLMs):</span> මේවා පිළිවෙළින් එක් ටෝකනයක් බැගින් ඊළඟට පැමිණිය යුතු දේ පුරෝකථනය කරමින් පාඨ ජනනය කරයි (උදා: GPT ශ්‍රේණිය).</li>
+                    <li><span class="highlight">සංකේතාංකක-පමණක් ආකෘති (Encoder-only LLMs):</span> ස්වාභාවික භාෂා අවබෝධය (NLU) කෙරෙහි අවධානය යොමු කරන අතර, පාඨයේ සම්පූර්ණ සන්දර්භය තේරුම් ගනී (උදා: BERT).</li>
+                    <li><span class="highlight">බහුමාදිලි LLM (Multimodal LLMs):</span> පාඨ, රූප, ශ්‍රව්‍ය සහ වීඩියෝ යන සියල්ල එකට සැකසිය හැක.</li>
+                </ul>
+                
+                <h2>4. LLM භාවිතයේ අභියෝග</h2>
+                
+                <p>LLM ඉතා බලවත් වුවත්, ඒවා භාවිතා කිරීමේදී අවබෝධ කර ගත යුතු මූලික සීමාවන් සහ අභියෝග තිබේ:</p>
+                
+                <ul>
+                    <li><span class="highlight">භ්‍රමණය (Hallucinations) සහ විශ්වසනීයත්වය:</span> LLM සතුව සැබෑ ලෝකය පිළිබඳ සත්‍ය අවබෝධයක් නොමැත. එම නිසා, ඒවාට <span class="highlight">සත්‍ය නොවන හෝ පදනම් විරහිත තොරතුරු</span> (භ්‍රමණය ලෙස හැඳින්වේ) ඉතා විශ්වාසයෙන් යුතුව ඉදිරිපත් කිරීමට හැකියාව ඇත.</li>
+                    <li><span class="highlight">පැරණි දැනුම (Outdated Knowledge):</span> LLM පුහුණු කර ඇත්තේ පුහුණු කරන ලද දත්ත මත බැවින්, ඒවාට <span class="highlight">තත්‍ය කාලීන සිදුවීම් හෝ නවතම තොරතුරු</span> පිළිබඳ සෘජු ප්‍රවේශයක් නොමැත.</li>
+                    <li><span class="highlight">පෞද්ගලිකත්ව අවදානම්:</span> LLM පුහුණු කර ඇති දත්ත විශාල ප්‍රමාණයක් නිසා, සමහර විට ආකෘතියට අහම්බෙන් <span class="highlight">පුද්ගලික හෝ රහස්‍ය තොරතුරු</span> (උදා: ඊමේල් ලිපින හෝ දුරකථන අංක) කාන්දු කිරීමේ ප්‍රවණතාවක් ඇත.</li>
+                    <li><span class="highlight">ඉහළ පිරිවැය:</span> විශාල LLM පුහුණු කිරීම සඳහා NVIDIA A100 සහ H100 වැනි <span class="highlight">ඉතා අධික මිලක් සහිත ග්‍රැෆික් සැකසුම් ඒකක (GPUs)</span> සහ විශාල ගණනය කිරීමේ සම්පත් අවශ්‍ය වේ.</li>
+                    <li><span class="highlight">තර්කනයේ දුර්වලතා:</span> සංකීර්ණ බහු-පියවර තර්ක සහ ගැටලු විසඳීමේදී LLM අරගල කළ හැකිය.</li>
+                </ul>
+                
+                <div class="quote">
+                    <p>LLM හි සැබෑ වටිනාකම පවතින්නේ ඒවායේ පාඨ ජනන හැකියාවන් සහ ඒවාට <span class="highlight">බාහිර මෙවලම් (tools)</span> සහ ක්‍රියාත්මක කිරීමේ යාන්ත්‍රණ සමඟ ඒකාබද්ධ වීමේ හැකියාව තුලයි. ඒවායේ සීමාවන් අවබෝධ කර ගනිමින් විනිවිදභාවය සහ ආරක්ෂාව සහතික කරන ආකාරයෙන් ඒවා භාවිතා කිරීම සියලු පාර්ශ්වයන්ට වැදගත් වේ.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <div class="container newsletter-container">
+            <h3>AI පිළිබඳ යාවත්කාලීන කිරීම් ලබා ගන්න</h3>
+            <p>සතිපතා AI පිළිබඳ අවසන් පර්යේෂණ, විශ්ලේෂණ සහ ප්‍රායෝගික යෙදවුම් ඔබේ ඊමේල් ලිපිනයට ලබා ගන්න.</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="ඔබේ ඊමේල් ලිපිනය" required>
+                <button class="cta-button" type="submit">සබ්ස්ක්‍රයිබ් කරන්න</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>Neural Insights</h4>
+                    <p>කෘතිම බුද්ධිය පිළිබඳ ප්‍රවේශම් සහිත, අවබෝධ කර ගත හැකි අන්තර්ගතය සමඟ තාක්ෂණය පිළිබඳ දැනුම ප්‍රචාරණය කිරීම.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Explore</h4>
+                    <ul>
+                        <li><a href="#">නවතම ලිපි</a></li>
+                        <li><a href="#">AI පර්යේෂණ පත්‍ර</a></li>
+                        <li><a href="#">මාර්ගෝපදේශ</a></li>
+                        <li><a href="#">අවස්ථා අධ්‍යයන</a></li>
+                        <li><a href="#">ශබ්දකෝෂය</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Topics</h4>
+                    <ul>
+                        <li><a href="#">යන්ත්‍ර ඉගෙනුම</a></li>
+                        <li><a href="#">ස්වාභාවික භාෂා සැකසුම</a></li>
+                        <li><a href="#">කම්පියුටර් දෘශ්‍යතාව</a></li>
+                        <li><a href="#">AI සදාචාරය</a></li>
+                        <li><a href="#">කාර්ය අනාගතය</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">අප පිළිබඳ</a></li>
+                        <li><a href="#">අපගේ කණ්ඩායම</a></li>
+                        <li><a href="#">රැකියා</a></li>
+                        <li><a href="#">සම්බන්ධ වන්න</a></li>
+                        <li><a href="#">රහස්‍යතා ප්‍රතිපත්තිය</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2024 Neural Insights. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple form submission handling
+        document.querySelector('.newsletter-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.querySelector('input').value;
+            if(email) {
+                alert(`ස්තූතියි! අපි ${email} වෙත AI පිළිබඳ යාවත්කාලීන කිරීම් යවන්නෙමු`);
+                this.reset();
+            }
+        });
+    </script>
+</body>
+</html>
