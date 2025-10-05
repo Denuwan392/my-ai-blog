@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What is Machine Learning (ML)? | Neural Insights</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Sinhalan:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --dark: #0f172a;
+            --darker: #0b1120;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+            --gradient-dark: linear-gradient(135deg, var(--primary-dark), var(--accent));
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            line-height: 1.8;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 20%);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            padding: 24px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: rgba(11, 17, 32, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 24px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .logo i {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 28px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+        }
+        
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        
+        nav a:hover {
+            color: var(--primary);
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        .cta-button {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(99, 102, 241, 0.5);
+        }
+        
+        /* Article Styles */
+        .article-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 40px;
+            background: var(--card-bg);
+            border-radius: 24px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .article-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .article-tag {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--primary);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        .article-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            background: linear-gradient(to right, #e2e8f0, #cbd5e1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .article-meta {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            color: var(--gray);
+            font-size: 1rem;
+        }
+        
+        .article-content {
+            font-family: 'Noto Sans Sinhalan', sans-serif;
+            font-size: 1.2rem;
+            color: #e2e8f0;
+        }
+        
+        .article-content p {
+            margin-bottom: 24px;
+        }
+        
+        .article-content h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            margin: 40px 0 24px;
+            color: var(--light);
+            position: relative;
+            padding-bottom: 12px;
+        }
+        
+        .article-content h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--gradient);
+            border-radius: 3px;
+        }
+        
+        .article-content h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.4rem;
+            margin: 32px 0 16px;
+            color: var(--light);
+        }
+        
+        .article-content ul {
+            padding-left: 30px;
+            margin: 20px 0 24px;
+        }
+        
+        .article-content li {
+            margin-bottom: 12px;
+            position: relative;
+        }
+        
+        .article-content li::before {
+            content: '•';
+            color: var(--primary);
+            font-weight: bold;
+            position: absolute;
+            left: -20px;
+            font-size: 1.4rem;
+        }
+        
+        .highlight {
+            background: rgba(139, 92, 246, 0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        .quote {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid var(--primary);
+            padding: 24px;
+            margin: 32px 0;
+            font-style: italic;
+            border-radius: 0 12px 12px 0;
+        }
+        
+        .quote p {
+            margin-bottom: 0;
+            font-size: 1.3rem;
+            line-height: 1.6;
+        }
+        
+        /* Newsletter */
+        .newsletter {
+            padding: 60px 0;
+            background: rgba(11, 17, 32, 0.6);
+            border-radius: 30px;
+            margin: 60px auto;
+            max-width: 800px;
+        }
+        
+        .newsletter-container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .newsletter h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+        
+        .newsletter p {
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .newsletter-form input {
+            flex: 1;
+            padding: 14px 20px;
+            border-radius: 30px;
+            border: none;
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            font-size: 16px;
+        }
+        
+        .newsletter-form input::placeholder {
+            color: var(--gray);
+        }
+        
+        /* Footer */
+        footer {
+            padding: 60px 0 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h4 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--gradient);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-column ul li a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-column ul li a:hover {
+            color: var(--primary);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 16px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--light);
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            color: var(--gray);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .article-container {
+                padding: 24px;
+                margin: 20px auto;
+            }
+            
+            .article-title {
+                font-size: 2.2rem;
+            }
+            
+            .article-content {
+                font-size: 1.1rem;
+            }
+            
+            nav ul {
+                display: none;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .article-title {
+                font-size: 1.8rem;
+            }
+            
+            .article-content h2 {
+                font-size: 1.5rem;
+            }
+            
+            .article-content h3 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <span>Neural Insights</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#">Articles</a></li>
+                    <li><a href="#">Topics</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="cta-button">Subscribe</button>
+        </div>
+    </header>
+
+    <!-- Article Content -->
+    <div class="container">
+        <div class="article-container">
+            <div class="article-header">
+                <span class="article-tag">MACHINE LEARNING</span>
+                <h1 class="article-title">What is Machine Learning (ML)?</h1>
+                <div class="article-meta">
+                    <span><i class="far fa-calendar"></i> June 20, 2024</span>
+                    <span><i class="far fa-clock"></i> 10 min read</span>
+                </div>
+            </div>
+            
+            <div class="article-content">
+                <p>මැෂින් ලර්නිං (Machine Learning - ML) යනු කෘතිම බුද්ධිය (Artificial Intelligence - AI) නම් පුළුල් විෂය ක්ෂේත්‍රය යටතේ පවතින ප්‍රමුඛතම උප ක්ෂේත්‍රයකි. පරිගණක විද්‍යාවේ සහ ඉංජිනේරු විද්‍යාවේ ප්‍රධාන විෂය ක්ෂේත්‍රයක් ලෙස ML වසර ගණනාවක් තිස්සේ වර්ධනය වී ඇත.</p>
+                
+                <h2>ML හි මූලධර්ම සහ ඉතිහාසය</h2>
+                
+                <p>ML යන පදය මුලින්ම හඳුන්වා දුන්නේ 1959 දී Arthur Samuel විසින් ලියන ලද පත්‍රිකාවකිනි. ML යනු AI සඳහා වූ විකල්ප ප්‍රවේශයකි. සාම්ප්‍රදායිකව, AI කාර්යයන් සඳහා මිනිස් විශේෂඥ දැනුම මත පදනම් වූ "if-then" ප්‍රකාශන (rules) විශාල සංඛ්‍යාවක් අඩංගු දැනුම් පදනම් (knowledge base) සහිත සංකේතාත්මක ප්‍රවේශයන් (symbolic approaches) භාවිතා කරන ලදී.</p>
+                
+                <p>කෙසේ වෙතත්, මෙම නීති අතින් නිර්මාණය කිරීම අතිශයින් දුෂ්කර හා වෙහෙසකර කාර්යයක් වූ අතර, යථාර්ථවාදී කාර්යයන් සඳහා අවශ්‍ය අනන්ත නීති සංඛ්‍යාව නිසා මෙම ක්‍රම අසාර්ථක විය.</p>
+                
+                <p>ML, දත්ත මත පදනම් වූ (data-driven) ප්‍රවේශයක් ලෙස, පුහුණු දත්ත (training data) නම් අතීත අත්දැකීම් තුළින් ස්වයංක්‍රීයව තම හැකියාවන් වැඩිදියුණු කර ගැනීමට පරිගණකවලට ඉගැන්වීමට ඉගෙනුම් ඇල්ගොරිතම නිර්මාණය කිරීම කෙරෙහි අවධානය යොමු කරයි. ML ඇල්ගොරිතම මගින්, පැහැදිලි ක්‍රමලේඛනයකින් තොරව තීරණ ගැනීමට ගණිතමය ආකෘති තැනීමට පුහුණු දත්ත ස්වයංක්‍රීයව භාවිතා කරයි. මෙම ප්‍රවේශය 1980 ගණන්වල සිට AI සඳහා ප්‍රධාන ක්‍රමවේදය බවට පත් විය.</p>
+                
+                <div class="quote">
+                    <p>"මැෂින් ලර්නිං යනු පරිගණක වැඩසටහන් ස්වයංක්‍රීයව දත්ත මත පදනම්ව ඉගෙන ගැනීමට හැකියාව ලබා දීමේ විද්‍යාවයි. එය මිනිස් දැනුම පරිගණකයක් තුළ ඇතුළත් කිරීම වෙනුවට, දත්ත මගින් ඉගෙන ගැනීමට ඉගැන්වීමයි."</p>
+                </div>
+                
+                <h2>ML පද්ධතියක ප්‍රධාන පියවර</h2>
+                
+                <p>සාර්ථක ML පද්ධතියක් ගොඩනැගීමේ ක්‍රියාවලියට සාමාන්‍යයෙන් ප්‍රධාන පියවර තුනක් ඇතුළත් වේ:</p>
+                
+                <ol>
+                    <li><span class="highlight">දත්ත එකතු කිරීම (Data Collection):</span> පරිගණකවලට ඉගෙනීමට හැකි වන පරිදි, පෙර අත්දැකීම් නියෝජනය කරන ප්‍රමාණවත් පුහුණු දත්ත (training data) එකතු කිරීම මෙහිදී සිදු වේ. පද්ධතිය යොදවන ස්ථානයේ පවතින තත්ත්වයන් යටතේම දත්ත එකතු කළ යුතුය (in-domain data).</li>
+                    <li><span class="highlight">විශේෂාංග නිස්සාරණය (Feature Extraction):</span> අමු දත්තවල අඩංගු වැදගත්ම තොරතුරු රඳවා තබා ගන්නා සංයුක්ත විශේෂාංග (features) නිස්සාරණය කිරීම සඳහා වසම්-විශේෂිත ක්‍රියා පටිපාටි යෙදීම අවශ්‍ය වේ. මෑතකාලීන ගැඹුරු ඉගෙනුම් (deep learning) ක්‍රමවේදයන්හිදී, මෙම විශේෂාංග නිස්සාරණය ස්වයංක්‍රීයව සිදුවන බැවින් අතින් නිර්මාණය කරන ලද විශේෂාංග (handcrafted features) ප්‍රතිස්ථාපනය කිරීමට නැඹුරුතාවයක් පවතී.</li>
+                    <li><span class="highlight">ආකෘති පුහුණුව (Model Training):</span> නිස්සාරණය කරන ලද විශේෂාංග නිරූපණයන්ගෙන් ගණිතමය ආකෘති තැනීම සඳහා ඉගෙනුම් ඇල්ගොරිතමයක් තෝරා ගැනීම මෙහිදී සිදු කෙරේ.</li>
+                </ol>
+                
+                <h2>ML හි මූලික සංකල්ප</h2>
+                
+                <p>ML ගැටලු පද්ධතියක ආදානය සහ ප්‍රතිදානය අනුව පරීක්ෂා කළ හැක. ප්‍රතිදානයේ ස්වභාවය අනුව ML ගැටළු ප්‍රධාන කාණ්ඩ දෙකකට බෙදා ඇත:</p>
+                
+                <ul>
+                    <li><span class="highlight">වර්ගීකරණය (Classification):</span> ප්‍රතිදානය පූර්ව නිශ්චිත තේරීම් ගණනකින් (discrete) එකක් පමණක් ගත හැකි විට (උදා: කථන හඳුනාගැනීම, පලතුරු හඳුනාගැනීම).</li>
+                    <li><span class="highlight">ප්‍රතිගාමනය (Regression):</span> ප්‍රතිදානය අඛණ්ඩව (continuous) පවතින විට (උදා: රූප උත්පාදනය, වක්‍ර ගැළපීම - curve fitting).</li>
+                </ul>
+                
+                <p>පුහුණු දත්තවල ස්වභාවය අනුවද ML වර්ගීකරණය වේ:</p>
+                
+                <ul>
+                    <li><span class="highlight">අධීක්ෂිත ඉගෙනුම් (Supervised Learning):</span> පුහුණු දත්ත ආදාන-ප්‍රතිදාන යුගල වශයෙන් ලබා ගත හැකි අතර, ප්‍රතිදානය ඉගෙනුම් ඇල්ගොරිතමයට අධීක්ෂණ සංඥාවක් ලෙස භාවිතා කරයි. මෙය දැනට වඩාත්ම පරිණත ML තාක්ෂණය ලෙස සැලකේ.</li>
+                    <li><span class="highlight">අනධීක්ෂිත ඉගෙනුම් (Unsupervised Learning / Clustering):</span> පුහුණු දත්ත ලෙස ආදානය පමණක් ලබා ගත හැකි අතර, ප්‍රතිදාන ලේබල නොමැති විට සමාන ආදානයන් කාණ්ඩගත කිරීමට නිර්ණායක සෙවීමට සිදුවේ.</li>
+                </ul>
+                
+                <h2>ML ආකෘති සහ අභියෝග</h2>
+                
+                <p>මූලික ML සංකල්ප අතර සරල ආකෘති එදිරිව සංකීර්ණ ආකෘති (Linear models vs. Nonlinear models), සහ පරාමිතික (Parametric) එදිරිව අපරාමිතික (Nonparametric) ආකෘති ද පවතී.</p>
+                
+                <p>ML හිදී ඇතිවන පොදු අභියෝග නම්:</p>
+                
+                <ul>
+                    <li><span class="highlight">අධි-ගැළපීම (Overfitting):</span> ආකෘතිය පුහුණු දත්තවල ඇති "ශබ්ද සංරචකය" (noise component) පරිපූර්ණ ලෙස ගැලපීමට බල කරන විට, එය නොදුටු දත්ත මත දුර්වල කාර්ය සාධනයක් ඇති කරයි.</li>
+                    <li><span class="highlight">අව-ගැළපීම (Underfitting):</span> භාවිතා කරන ආකෘතිය "සංඥා සංරචකයේ" (signal component) ඇති සියලුම රටා ග්‍රහණය කර ගැනීමට තරම් සරල වන විට, එය පුහුණු දත්ත මත පවා දුර්වල ප්‍රතිඵල ලබා දෙයි.</li>
+                    <li><span class="highlight">පක්ෂග්‍රාහී-විචල්‍ය හුවමාරුව (Bias–Variance Trade-Off):</span> මුළු අපේක්ෂිත දෝෂය (error) පක්ෂග්‍රාහී දෝෂය (bias due to underfitting) සහ විචල්‍ය දෝෂය (variance due to overfitting) ලෙස කොටස් දෙකකට බෙදිය හැකි අතර, මෙම දෝෂ මූලාශ්‍ර දෙකම එකවර අඩු කළ නොහැක.</li>
+                </ul>
+                
+                <p>ML ආකෘති පුළුල් පරාසයක් ආවරණය කරයි. මෙයට SVMs, boosted trees, HMMs, LDAs වැනි සාම්ප්‍රදායික ක්‍රම සහ convolution neural nets, attention, transformers, GANs වැනි ජනප්‍රිය ගැඹුරු ඉගෙනුම් ක්‍රම ඇතුළත් වේ.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <div class="container newsletter-container">
+            <h3>Get AI Updates</h3>
+            <p>Receive weekly insights, research summaries, and exclusive content delivered to your inbox.</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Your email address" required>
+                <button class="cta-button" type="submit">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>Neural Insights</h4>
+                    <p>Demystifying artificial intelligence through accessible, insightful content for professionals and enthusiasts.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Explore</h4>
+                    <ul>
+                        <li><a href="#">Latest Articles</a></li>
+                        <li><a href="#">AI Research Papers</a></li>
+                        <li><a href="#">Tutorials</a></li>
+                        <li><a href="#">Case Studies</a></li>
+                        <li><a href="#">Glossary</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Topics</h4>
+                    <ul>
+                        <li><a href="#">Machine Learning</a></li>
+                        <li><a href="#">Natural Language Processing</a></li>
+                        <li><a href="#">Computer Vision</a></li>
+                        <li><a href="#">AI Ethics</a></li>
+                        <li><a href="#">Future of Work</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Our Team</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2024 Neural Insights. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple form submission handling
+        document.querySelector('.newsletter-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.querySelector('input').value;
+            if(email) {
+                alert(`Thank you! We'll send AI insights to ${email}`);
+                this.reset();
+            }
+        });
+    </script>
+</body>
+</html>
